@@ -73,6 +73,9 @@ module half_roller(){
 
 bearing_interlock_offset = 2;
 tolerance = 0.2;
+// increase if assembly requires too much force. Something like 0.1-0.2 should
+// be sufficient - anything more and you should rather calibrate your printer.
+snap_tolerance = 0;
 side_interlock_offset = 2;
 side_interlock_diameter = 4;
 
@@ -109,19 +112,19 @@ difference(){
   }
   // interlock cutout on the bearing
   translate([bearing_center_x*-1, bearing_offset_y, main_thickness-bearing_interlock_offset-tolerance]){
-    cylinder(h=bearing_interlock_offset+tolerance, r=bearing_shaft_diameter/2-1);
+    cylinder(h=bearing_interlock_offset+tolerance, r=bearing_shaft_diameter/2-1+snap_tolerance);
   }
   // interlock cutouts on the sides
   translate([side_interlock_xy[0]*-1, side_interlock_xy[1], main_thickness-side_interlock_offset-tolerance]){
-    cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2);
+    cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2+snap_tolerance);
     translate([0, -20, 0]){
-      cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2);
+      cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2+snap_tolerance);
     }
   }
 
   // interlock cutout on the bottom, under the bearing
     translate([bearing_center_x*-1, side_interlock_xy[1], main_thickness-side_interlock_offset-tolerance]){
-      cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2);
+      cylinder(h=side_interlock_offset+tolerance, r=side_interlock_diameter/2+snap_tolerance);
     }
 
 }
